@@ -18,7 +18,7 @@ app.get('/notes', (req, res) => {
 
 //Get request for fetching all notes
 app.get('/api/notes', (req, res) => {
-  fs.readFile(path.join(__dirname, 'db/db.json'), (err, data) => {
+  fs.readFile(path.join(__dirname, './db/db.json'), (err, data) => {
     if (err) { console.log(err) }
     res.json(JSON.parse(data));
   })
@@ -27,6 +27,22 @@ app.get('/api/notes', (req, res) => {
 //Post request to add new notes
 app.post('/api/notes', (req, res) => {
   
+  fs.readFile(path.join(__dirname, './db/db.json'), (err, data) => {
+    if (err) { console.log(err) }
+    const { title, text } = req.body;
+    const newNote = {
+      title,
+      text
+    }
+    const notes = JSON.parse(data);
+    notes.push(newNote);
+    console.log(notes);
+  })
+
+  fs.writeFile(path.join(__dirname, './db/db.json'), JSON.stringify(notes), (err) => {
+    if (err) { console.log(err) }
+    res.json(newNote);
+  })
 })
 
 
